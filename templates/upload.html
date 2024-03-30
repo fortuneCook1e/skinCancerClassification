@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Prediction</title>
+    <style>
+        .image-preview, .result-preview {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        img {
+            width: 192px;
+            height: 256px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<input type="file" id="imageUpload" accept="image/*">
+<div class="image-preview" id="imagePreview">
+    <img src="" alt="Image Preview" style="display: none;">
+</div>
+
+<button onclick="predict()">Predict</button>
+<button onclick="clearResults()">Clear</button>
+
+<div class="result-preview" id="segmentedImagePreview">
+    <img src="" alt="Segmented Image Preview" style="display: none;">
+</div>
+
+<div id="result"></div>
+
+<script>
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview').querySelector('img');
+    const segmentedImagePreview = document.getElementById('segmentedImagePreview').querySelector('img');
+    const resultDiv = document.getElementById('result');
+
+    imageUpload.onchange = event => {
+        const [file] = imageUpload.files;
+        if (file) {
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.style.display = 'block';
+        }
+    };
+
+    function predict() {
+        const formData = new FormData();
+        formData.append('file', imageUpload.files[0]);
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Assuming the response includes paths or URLs to the images
+            if (data.segmented_image) {
+                segmentedImagePreview.src = data.segmented_image;
+                segmentedImagePreview.style.display = 'block';
+            }
+            resultDiv.innerHTML = `<p>Predicted Class: ${data.predicted_class}; Confidence Score: ${data.confidence_score}</p>`;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function clearResults() {
+        // Clear the file input
+        imageUpload.value = "";
+        // Hide and clear the image previews
+        imagePreview.style.display = 'none';
+        imagePreview.src = '';
+        segmentedImagePreview.style.display = 'none';
+        segmentedImagePreview.src = '';
+        // Clear the results area
+        resultDiv.innerHTML = '';
+    }
+</script>
+
+</body>
+</html>
