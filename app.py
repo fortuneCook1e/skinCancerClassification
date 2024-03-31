@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, url_for
 import os
 from werkzeug.utils import secure_filename
 from tensorflow.keras.models import load_model
 import numpy as np
 import cv2
+import tempfile
+import base64
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['SEGMENTED_FOLDER'] = 'segmented_images'
+# app.config['UPLOAD_FOLDER'] = 'uploads'
+# app.config['SEGMENTED_FOLDER'] = 'segmented_images'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB limit
 
 def get_segment(model, image):
@@ -62,9 +64,9 @@ def classify_img(model, segmented_region):
 segmentation_model = load_model('C:/Users/jeesh/Documents(local)/FYP/fyp code/chosen_models/resnet50_segmentation-unfreeze.h5')
 classification_model = load_model('C:/Users/jeesh/Documents(local)/FYP/fyp code/chosen_models/AttentionInceptionV3(with_extraction)-r8_k3.h5')
 
-# Ensure the upload and segmented folders exist
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-os.makedirs(app.config['SEGMENTED_FOLDER'], exist_ok=True)
+# # Ensure the upload and segmented folders exist
+# os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# os.makedirs(app.config['SEGMENTED_FOLDER'], exist_ok=True)
 
 @app.route('/')
 def home():
@@ -80,34 +82,34 @@ def predict():
         return jsonify({'error': 'No selected file'})
     
     if file:
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
+        # Save the uploaded file to a temporary directory
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            file.save(temp.name)
+            # Preprocess the uploaded image
+            preprocessed_image = preprocess_image(temp.name)
+            # Get the contour and mask
+            img_with_contour, pred_mask = get_segment(segmentation_model, preprocessed_image)
+            # Get tumour region
+            segmented_region = get_region(preprocessed_image, pred_mask)
 
-        # Preprocess the uploaded image
-        preprocessed_image = preprocess_image(file_path)
-        # Get the contour and mask
-        img_with_contour, pred_mask = get_segment(segmentation_model, preprocessed_image)
-        # Get tumour region
-        segmented_region = get_region(preprocessed_image, pred_mask)
-        # Classify
+        # Perform classification on the segmented region
         predicted_class_label, confidence_score = classify_img(classification_model, segmented_region)
-    
-        # Save the processed image (e.g., img_with_contour or segmented_region) to a file
-        segmented_filename = "segmented_" + filename
-        segmented_image_path = os.path.join(app.config['SEGMENTED_FOLDER'], segmented_filename)
-        cv2.imwrite(segmented_image_path, img_with_contour)  # Assuming img_with_contour is in the correct format (255 scale, BGR color)
 
-        # Return the path to the segmented image along with the classification result
+        # Encode the segmented image to base64 to send in the JSON response
+        _, buffer = cv2.imencode('.png', img_with_contour)
+        b64_segmented_image = base64.b64encode(buffer).decode('utf-8')
+
+        # Return the classification result and the base64-encoded image
         return jsonify({
-            'segmented_image': os.path.join('segmented_images', segmented_filename),
+            'segmented_image': f"data:image/png;base64,{b64_segmented_image}",
             'predicted_class': predicted_class_label,
             'confidence_score': f"{confidence_score:.2f}"
         })
 
-@app.route('/segmented_images/<filename>')
-def send_segmented_file(filename):
-    return send_from_directory(app.config['SEGMENTED_FOLDER'], filename)
+
+# @app.route('/segmented_images/<filename>')
+# def send_segmented_file(filename):
+#     return send_from_directory(app.config['SEGMENTED_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

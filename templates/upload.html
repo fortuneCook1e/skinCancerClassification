@@ -60,7 +60,7 @@
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            // Assuming the response includes paths or URLs to the images
+            // Use the base64 data as the source for the segmented image
             if (data.segmented_image) {
                 segmentedImagePreview.src = data.segmented_image;
                 segmentedImagePreview.style.display = 'block';
