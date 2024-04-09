@@ -5,9 +5,10 @@
     <title>Image Prediction</title>
     <style>
         .image-preview, .result-preview {
-            margin-top: 20px;
+            margin-top: 3px;
+            margin-bottom: 3px;
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: /0px;
             border-radius: 5px;
         }
         img {
@@ -17,23 +18,36 @@
         #result {
             margin-top: 20px;
         }
+        .input-field{
+            display: block;
+            
+        }
+        .overall{
+            display: flex;
+        }
     </style>
 </head>
 <body>
 
+<div class="overall">
+<div class="input-field">
 <input type="file" id="imageUpload" accept="image/*">
-<div class="image-preview" id="imagePreview">
+<div class="image-preview" id="imagePreview" style="width: 192px; height: 256px; border: 3px solid">
     <img src="" alt="Image Preview" style="display: none;">
 </div>
-
 <button onclick="predict()">Predict</button>
 <button onclick="clearResults()">Clear</button>
+</div>
 
-<div class="result-preview" id="segmentedImagePreview">
+
+<div class="output-field" style="margin-left:100px; margin-top:20px">
+<div class="result-preview" id="segmentedImagePreview" style="width: 192px; height: 256px; border: 3px solid">
     <img src="" alt="Segmented Image Preview" style="display: none;">
 </div>
 
-<div id="result"></div>
+<div id="result" style="width: 300px; height: 30px;"></div>
+</div>
+</div>
 
 <script>
     const imageUpload = document.getElementById('imageUpload');
@@ -65,7 +79,7 @@
                 segmentedImagePreview.src = data.segmented_image;
                 segmentedImagePreview.style.display = 'block';
             }
-            resultDiv.innerHTML = `<p>Predicted Class: ${data.predicted_class}; Confidence Score: ${data.confidence_score}</p>`;
+            resultDiv.innerHTML = `<p>Predicted Class: ${data.predicted_class}<br>Confidence Score: ${data.confidence_score}</p>`;
         })
         .catch(error => console.error('Error:', error));
     }
