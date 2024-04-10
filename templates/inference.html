@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computer-aided Diagnosis (CAD) System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .image-preview, .result-preview {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .image-preview img, .result-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .input-field, .output-field {
+            text-align: center;
+        }
+        .model {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(192px, 1fr));
+            gap: 1rem;
+            justify-content: center;
+            align-items: start;
+            padding: 2rem 0;
+        }
+        .input-field button, .output-field button {
+            margin-top: 1rem;
+        }
+        .instructions {
+            padding: 1rem;
+            background-color: #f0f0f0;
+            overflow-y: auto;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+        .instructions ol {
+            padding-left: 1rem;
+        }
+        .instructions img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 1rem;
+        }
+        .container {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="container-fluid">
+    <ul>
+        <li><strong>Computer-aided Diagnosis System</strong></li>
+    </ul>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#" role="button">Contact Us</a></li>
+    </ul>
+</nav>
+
+<main class="container">
+    <section>
+        <hgroup>
+            <h2>Diagnose Skin Cancer with AI</h2>
+            <h3>Fast, Accurate, and Reliable</h3>
+        </hgroup>
+        <p>Welcome to our Computer-aided Diagnosis (CAD) System designed to assist in the early detection of skin cancer. Our system uses advanced machine learning algorithms to analyze images of skin lesions and provide a diagnosis.</p>
+        <figure>
+            <img src="https://files.oaiusercontent.com/file-qI1fHYRWbBpwm0w3Yzj3kNU3" alt="CAD System Interface" />
+            <figcaption><a href="https://files.oaiusercontent.com/file-qI1fHYRWbBpwm0w3Yzj3kNU3" target="_blank">View Full Image</a></figcaption>
+        </figure>
+        <h3>How It Works</h3>
+        <p>Upload an image of the skin lesion and our CAD system will analyze the image, highlighting potential areas of concern and providing a detailed report.</p>
+        <h3>Get Started</h3>
+        <p>To begin, simply upload an image of the lesion using the interface below. Our system will do the rest, providing you with a quick and accurate diagnosis.</p>
+        <div class="model">
+            <div class="input-field">
+                <div class="image-preview" id="imagePreview">
+                    <img src="" alt="Image Preview" style="display: none;">
+                </div>
+                <label for="imageUpload" class="button primary">Choose File</label>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                <button onclick="predict()">Predict</button>
+                <button onclick="clearResults()">Clear</button>
+            </div>
+
+            <div class="output-field">
+                <div class="result-preview" id="segmentedImagePreview">
+                    <img src="" alt="Segmented Image Preview" style="display: none;">
+                </div>
+                <div id="result"></div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<section aria-label="Subscribe example" class="container">
+    <article>
+        <h3>Stay Updated</h3>
+        <p>Subscribe to our newsletter for the latest updates on our CAD system and skin cancer research.</p>
+        <form class="grid">
+            <input type="text" id="firstname" name="firstname" placeholder="Your Name" aria-label="Your Name" required />
+            <input type="email" id="email" name="email" placeholder="Email Address" aria-label="Email Address" required />
+            <button type="submit" onclick="event.preventDefault()">Subscribe</button>
+        </form>
+    </article>
+</section>
+
+<footer class="container">
+    <small>
+        <a href="#">Privacy Policy</a> • <a href="#">Terms of Use</a>
+    </small>
+</footer>
+
+<script>
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview').querySelector('img');
+    const segmentedImagePreview = document.getElementById('segmentedImagePreview').querySelector('img');
+    const resultDiv = document.getElementById('result');
+
+    imageUpload.onchange = event => {
+        const [file] = imageUpload.files;
+        if (file) {
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.style.display = 'block';
+        }
+    };
+
+    function predict() {
+        const formData = new FormData();
+        formData.append('file', imageUpload.files[0]);
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Use the base64 data as the source for the segmented image
+            if (data.segmented_image) {
+                segmentedImagePreview.src = data.segmented_image;
+                segmentedImagePreview.style.display = 'block';
+            }
+            resultDiv.innerHTML = `<p>Predicted Class: ${data.predicted_class}<br>Confidence Score: ${data.confidence_score}</p>`;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function clearResults() {
+        // Clear the file input
+        imageUpload.value = "";
+        // Hide and clear the image previews
+        imagePreview.style.display = 'none';
+        imagePreview.src = '';
+        segmentedImagePreview.style.display = 'none';
+        segmentedImagePreview.src = '';
+        // Clear the results area
+        resultDiv.innerHTML = '';
+    }
+</script>
+</body>
+</html>

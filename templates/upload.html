@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Image Prediction</title>
     <style>
+        html, body {
+            height: 100%; /* Add this to ensure full page height */
+            margin: 0; /* Reset default margin */
+            padding: 0; /* Reset default padding */
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+        }
         .image-preview, .result-preview {
             margin-top: 3px;
             margin-bottom: 3px;
@@ -22,31 +29,81 @@
             display: block;
             
         }
-        .overall{
+        .model{
             display: flex;
+            margin-top: 10%;
+        }
+        .instructions {
+            margin-left: 15%;
+            padding: 10px;
+            width: 50%; 
+            background-color: lightgray;
+            overflow-y: auto;
+            max-height: 100%;
+        }
+        .content{
+            display: flex;
+            background-color: gr/ay;
+            flex: 1;
+            margin: 5%;
+            overflow: hidden;
+        }
+        .instructions img{
+            width: 400px;
+            height: 250px;
+        }
+        .left-section{
+            display: block;
+            width: 30%;
         }
     </style>
 </head>
 <body>
 
-<div class="overall">
-<div class="input-field">
-<input type="file" id="imageUpload" accept="image/*">
-<div class="image-preview" id="imagePreview" style="width: 192px; height: 256px; border: 3px solid">
-    <img src="" alt="Image Preview" style="display: none;">
-</div>
-<button onclick="predict()">Predict</button>
-<button onclick="clearResults()">Clear</button>
-</div>
+<div class="content">
+    <div class="left-section">
+        <h1>Computer-aided Diagnosis (CAD) System for Diagnosing Skin Cancer</h1>
+        <div class="model">
+            <div class="input-field">
+                <input type="file" id="imageUpload" accept="image/*">
+                <div class="image-preview" id="imagePreview" style="width: 192px; height: 256px; border: 3px solid">
+                    <img src="" alt="Image Preview" style="display: none;">
+                </div>
+                <button onclick="predict()">Predict</button>
+                <button onclick="clearResults()">Clear</button>
+            </div>
 
 
-<div class="output-field" style="margin-left:100px; margin-top:20px">
-<div class="result-preview" id="segmentedImagePreview" style="width: 192px; height: 256px; border: 3px solid">
-    <img src="" alt="Segmented Image Preview" style="display: none;">
-</div>
+            <div class="output-field" style="margin-left:100px; margin-top:20px">
+                <div class="result-preview" id="segmentedImagePreview" style="width: 192px; height: 256px; border: 3px solid">
+                    <img src="" alt="Segmented Image Preview" style="display: none;">
+                </div>
+                <div id="result" style="width: 300px; height: 30px;"></div>
+            </div>
+        </div>
+    </div>
 
-<div id="result" style="width: 300px; height: 30px;"></div>
-</div>
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <ol>
+            <li>Click on "Choose File" to upload an image.</li>
+            <img src="\templates\image\choose file.png" alt="Description of image">
+            <li>View the uploaded image in the left preview box.</li>
+            <li>Click "Predict" to process the image.</li>
+            <img src="\templates\image\predict.png" alt="Description of image">
+            <li>See the result in the right preview box.</li>
+            <ul>
+                <li>The blue boundary indicates the region of the lesion</li>
+                <img src="\templates\image\segment.png" alt="Description of image">
+                <li>The predicted class </li>
+                <img src="\templates\image\pred class.png" alt="Description of image">
+                <li>The confidence score</li>
+                <img src="\templates\image\confidence.png" alt="Description of image">
+            </ul>
+            <li>If needed, click "Clear" to reset and start over.</li>
+            <img src="\templates\image\clear.png" alt="Description of image">
+        </ol>
+    </div>
 </div>
 
 <script>
