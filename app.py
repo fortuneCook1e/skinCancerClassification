@@ -82,7 +82,7 @@ classification_model = load_model('C:/Users/jeesh/Documents(local)/FYP/fyp code/
 
 @app.route('/')
 def home():
-    return render_template('inference.html')
+    return render_template('upload.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():

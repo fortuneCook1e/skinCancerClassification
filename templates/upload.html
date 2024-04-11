@@ -2,109 +2,245 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image Prediction</title>
+    <title>Computer-aided Diagnosis (CAD) System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         html, body {
-            height: 100%; /* Add this to ensure full page height */
-            margin: 0; /* Reset default margin */
-            padding: 0; /* Reset default padding */
-            display: flex;
-            flex-direction: column; /* Stack children vertically */
+            font-family: 'Open Sans', sans-serif;
+            background: #f9f9f9;
+        }
+        .hero {
+            background: #e1efff;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .hero h2 {
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+        .hero p {
+            color: #555;
+        }
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #007bff;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .button:hover {
+            background-color: lightgray;
+            transition: background-color 0.3s;
+        }
+        footer {
+            color: #007bff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .inference-interface {
+            text-align: center;
+            padding-top: 2rem;
         }
         .image-preview, .result-preview {
-            margin-top: 3px;
-            margin-bottom: 3px;
             border: 1px solid #ddd;
-            padding: /0px;
             border-radius: 5px;
-        }
-        img {
-            width: 192px;
-            height: 256px;
-        }
-        #result {
-            margin-top: 20px;
-        }
-        .input-field{
-            display: block;
-            
-        }
-        .model{
-            display: flex;
-            margin-top: 10%;
-        }
-        .instructions {
-            margin-left: 15%;
-            padding: 10px;
-            width: 50%; 
-            background-color: lightgray;
-            overflow-y: auto;
-            max-height: 100%;
-        }
-        .content{
-            display: flex;
-            background-color: gr/ay;
-            flex: 1;
-            margin: 5%;
             overflow: hidden;
+            margin-top: 1rem;
         }
-        .instructions img{
-            width: 400px;
-            height: 250px;
-        }
-        .left-section{
+        .image-preview img, .result-preview img {
+            width: 100%;
+            height: 50vh;
             display: block;
-            width: 30%;
         }
+        .model {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(192px, 1fr));
+            gap: 1rem;
+            justify-content: center;
+            align-items: start;
+            padding: 2rem 0;
+        }
+        
+        .carousel {
+            position: relative;
+            margin: auto;
+            max-width: 6/00px; /* Adjust as necessary */
+            width: 80%;
+            height: 30%;
+          }
+          
+          .carousel-slides .slide {
+            height: 60vh;
+            display: none;
+            padding: 20px;
+            text-align: center;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+          }
+          .carousel-slides img {
+            width: 50vw; 
+            height: 50vh;
+            border-radius: 5px; 
+          }
+          
+          .carousel-slides .active {
+            display: block;
+          }
+          
+          .carousel-indicators {
+            text-align: center;
+            padding: 20px;
+          }
+          
+          .carousel-indicators .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 6px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+          }
+          
+          .carousel-indicators .dot.active, .carousel-indicators .dot:hover {
+            background-color: #007bff;
+          }
+          
+          
     </style>
 </head>
 <body>
 
-<div class="content">
-    <div class="left-section">
-        <h1>Computer-aided Diagnosis (CAD) System for Diagnosing Skin Cancer</h1>
-        <div class="model">
-            <div class="input-field">
-                <input type="file" id="imageUpload" accept="image/*">
-                <div class="image-preview" id="imagePreview" style="width: 192px; height: 256px; border: 3px solid">
-                    <img src="" alt="Image Preview" style="display: none;">
-                </div>
-                <button onclick="predict()">Predict</button>
-                <button onclick="clearResults()">Clear</button>
-            </div>
+<nav class="container-fluid">
+    <ul>
+        <li><strong>Computer-aided Diagnosis System</strong></li>
+    </ul>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#" role="button">Contact Us</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <hgroup>
+        <h2>Diagnose Skin Cancer with AI</h2>
+        <h3>Fast, Accurate, and Reliable</h3>
+    </hgroup>
+    <p>
+        Welcome to our Computer-aided Diagnosis (CAD) System designed to assist in the early detection of skin cancer. 
+        <br>Our system uses advanced machine learning algorithms to analyze images of skin lesions and provide a diagnosis.
+    </p>
+</section>
 
 
-            <div class="output-field" style="margin-left:100px; margin-top:20px">
-                <div class="result-preview" id="segmentedImagePreview" style="width: 192px; height: 256px; border: 3px solid">
-                    <img src="" alt="Segmented Image Preview" style="display: none;">
+    <div class="carousel">
+    <!-- Slides -->
+    <div class="carousel-slides">
+        <div class="slide active" id="slide1">
+            <h3>How It Works</h3>
+            <p>Upload an image of the skin lesion and our CAD system will analyze the image, highlighting potential areas of concern and providing a prediction.</p>
+            <img src="static\image\pipeline.png" alt="pipeline" style="height: 30vh">
+          </div>
+        <div class="slide" id="slide2">
+          <p>Step 1: Click the "Choose File" button to upload an image of a skin lesion.</p>
+          <img src="static/image/choose_file.png" alt="Choose File">
+        </div>
+        <div class="slide" id="slide3">
+          <p>Step 2: After selecting the image, click "Predict" to start the analysis.</p>
+          <img src="static/image/start_predict.png" alt="Start Prediction">
+        </div>
+        <div class="slide" id="slide4">
+          <p>Step 3: View the analyzed image with contours highlighting the lesion.</p>
+          <img src="static/image/contour.png" alt="Contour">
+        </div>
+        <div class="slide" id="slide5">
+          <p>Step 4: Check the predicted class indicating if the lesion is benign or malignant.</p>
+          <img src="static/image/pred_class.png" alt="Prediction Class">
+        </div>
+        <div class="slide" id="slide6">
+          <p>Step 5: Review the confidence score for the prediction accuracy.</p>
+          <img src="static/image/confidence_score.png" alt="Confidence Score">
+        </div>
+        <div class="slide" id="slide7">
+          <p>Step 6: If needed, click "Clear" to reset and upload a new image.</p>
+          <img src="static/image/clear_img.png" alt="Clear Results">
+        </div>
+      </div>
+      
+    
+    <!-- Dots/Indicators -->
+    <div class="carousel-indicators">
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+      <span class="dot" onclick="currentSlide(3)"></span>
+      <span class="dot" onclick="currentSlide(4)"></span>
+      <span class="dot" onclick="currentSlide(5)"></span>
+      <span class="dot" onclick="currentSlide(6)"></span>
+      <span class="dot" onclick="currentSlide(7)"></span>
+      <!-- Add as many dots as there are slides -->
+    </div>
+  </div>
+  
+<main class="container">
+    <div class="inference-interface">
+        <div class="card">
+            <h3>Get Started</h3>
+            <p>To begin, simply upload an image of the lesion using the interface below. Our system will do the rest, providing you with a quick and accurate diagnosis.</p>
+            <div class="model">
+                <div class="input-field">
+                    <div class="image-preview" id="imagePreview">
+                        <img src="" alt="Image Preview" style="display: none;">
+                    </div>
+                    <label for="imageUpload" class="button primary">Choose File</label>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                    <button onclick="predict()">Predict</button>
+                    <button onclick="clearResults()">Clear</button>
                 </div>
-                <div id="result" style="width: 300px; height: 30px;"></div>
+
+                <div class="output-field">
+                    <div class="result-preview" id="segmentedImagePreview">
+                        <img src="" alt="Segmented Image Preview" style="display: none;">
+                    </div>
+                    <div id="result"></div>
+                </div>
             </div>
         </div>
     </div>
+</main>
 
-    <div class="instructions">
-        <h2>Instructions</h2>
-        <ol>
-            <li>Click on "Choose File" to upload an image.</li>
-            <img src="\templates\image\choose file.png" alt="Description of image">
-            <li>View the uploaded image in the left preview box.</li>
-            <li>Click "Predict" to process the image.</li>
-            <img src="\templates\image\predict.png" alt="Description of image">
-            <li>See the result in the right preview box.</li>
-            <ul>
-                <li>The blue boundary indicates the region of the lesion</li>
-                <img src="\templates\image\segment.png" alt="Description of image">
-                <li>The predicted class </li>
-                <img src="\templates\image\pred class.png" alt="Description of image">
-                <li>The confidence score</li>
-                <img src="\templates\image\confidence.png" alt="Description of image">
-            </ul>
-            <li>If needed, click "Clear" to reset and start over.</li>
-            <img src="\templates\image\clear.png" alt="Description of image">
-        </ol>
-    </div>
-</div>
+<!-- Subscription Section, Footer, and Script remains unchanged -->
+<footer class="container">
+    <small>
+        <a href="#">Privacy Policy</a> • <a href="#">Terms of Use</a>
+    </small>
+</footer>
 
 <script>
     const imageUpload = document.getElementById('imageUpload');
@@ -152,7 +288,28 @@
         // Clear the results area
         resultDiv.innerHTML = '';
     }
-</script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
 
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      let slides = document.getElementsByClassName("slide");
+      let dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {slideIndex = 1}    
+      if (n < 1) {slideIndex = slides.length}
+      for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";  
+      }
+      for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex-1].style.display = "block";  
+      dots[slideIndex-1].className += " active";
+    }
+</script>
 </body>
 </html>
