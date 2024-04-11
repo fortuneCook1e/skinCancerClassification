@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Computer-aided Diagnosis (CAD) System</title>
+    <title>LESION LAB</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="static/layout.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
+    <!--<style>
         html, body {
             font-family: 'Open Sans', sans-serif;
             background: #f9f9f9;
@@ -88,7 +89,6 @@
         .carousel {
             position: relative;
             margin: auto;
-            max-width: 6/00px; /* Adjust as necessary */
             width: 80%;
             height: 30%;
           }
@@ -133,13 +133,13 @@
           }
           
           
-    </style>
+    </style> -->
 </head>
 <body>
 
 <nav class="container-fluid">
     <ul>
-        <li><strong>Computer-aided Diagnosis System</strong></li>
+        <li><strong>LESION LAB</strong></li>
     </ul>
     <ul>
         <li><a href="#">Home</a></li>
@@ -150,7 +150,7 @@
 
 <section class="hero">
     <hgroup>
-        <h2>Diagnose Skin Cancer with AI</h2>
+        <h1>Diagnose Skin Cancer with AI</h1>
         <h3>Fast, Accurate, and Reliable</h3>
     </hgroup>
     <p>
@@ -169,28 +169,34 @@
             <img src="static\image\pipeline.png" alt="pipeline" style="height: 30vh">
           </div>
         <div class="slide" id="slide2">
-          <p>Step 1: Click the "Choose File" button to upload an image of a skin lesion.</p>
-          <img src="static/image/choose_file.png" alt="Choose File">
+            <h2>Step 1: </h2>
+            <p>Click the "Choose File" button to upload an image of a skin lesion.</p>
+            <img src="static/image/choose_file.png" alt="Choose File">
         </div>
         <div class="slide" id="slide3">
-          <p>Step 2: After selecting the image, click "Predict" to start the analysis.</p>
-          <img src="static/image/start_predict.png" alt="Start Prediction">
+            <h2>Step 2: </h2>
+            <p>After selecting the image, click "Predict" to start the analysis.</p>
+            <img src="static/image/start_predict.png" alt="Start Prediction">
         </div>
         <div class="slide" id="slide4">
-          <p>Step 3: View the analyzed image with contours highlighting the lesion.</p>
-          <img src="static/image/contour.png" alt="Contour">
+            <h2>Step 3: </h2>
+            <p>View the analyzed image with contours highlighting the lesion.</p>
+            <img src="static/image/contour.png" alt="Contour">
         </div>
         <div class="slide" id="slide5">
-          <p>Step 4: Check the predicted class indicating if the lesion is benign or malignant.</p>
-          <img src="static/image/pred_class.png" alt="Prediction Class">
+            <h2>Step 4: </h2>
+            <p>Check the predicted class indicating if the lesion is benign or malignant.</p>
+            <img src="static/image/pred_class.png" alt="Prediction Class">
         </div>
         <div class="slide" id="slide6">
-          <p>Step 5: Review the confidence score for the prediction accuracy.</p>
-          <img src="static/image/confidence_score.png" alt="Confidence Score">
+            <h2>Step 5: </h2>
+            <p>Review the confidence score for the prediction accuracy.</p>
+            <img src="static/image/confidence_score.png" alt="Confidence Score">
         </div>
         <div class="slide" id="slide7">
-          <p>Step 6: If needed, click "Clear" to reset and upload a new image.</p>
-          <img src="static/image/clear_img.png" alt="Clear Results">
+            <h2>Step 6: </h2>
+            <p>If needed, click "Clear" to reset and upload a new image.</p>
+            <img src="static/image/clear_img.png" alt="Clear Results">
         </div>
       </div>
       
@@ -236,11 +242,13 @@
 </main>
 
 <!-- Subscription Section, Footer, and Script remains unchanged -->
+<section class="hero">
 <footer class="container">
     <small>
-        <a href="#">Privacy Policy</a> • <a href="#">Terms of Use</a>
+        <a href="static\privacy.html" target="_blank">Privacy Policy</a> • <a href="static\terms.html" target="_blank">Terms of Use</a>
     </small>
 </footer>
+</section>
 
 <script>
     const imageUpload = document.getElementById('imageUpload');
