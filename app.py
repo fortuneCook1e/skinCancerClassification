@@ -22,7 +22,7 @@ def get_segment(model, image):
     original_image_vis = image.copy()
     # Convert image to BGR for OpenCV if needed
     original_image_vis_cv2 = (original_image_vis * 255).astype(np.uint8)
-    original_image_vis_cv2 = cv2.cvtColor(original_image_vis_cv2, cv2.COLOR_RGB2BGR)
+    # original_image_vis_cv2 = cv2.cvtColor(original_image_vis_cv2, cv2.COLOR_RGB2BGR)
     # Draw contours on the original image for OpenCV
     cv2.drawContours(original_image_vis_cv2, contours_pred, -1, (255, 0, 0), 3)  # Predicted mask in blue
     return original_image_vis_cv2, pred_mask
@@ -36,7 +36,7 @@ def get_segment(model, image):
 def preprocess_image(image_path, target_size=(192, 256)):
     image = cv2.imread(image_path)
     original_size = image.shape[:2]  # Capture original size before resizing
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     image = cv2.resize(image, target_size) / 255.0  # Normalize to 0-1
     return image, original_size  # Return both processed image and original size
 
@@ -84,6 +84,23 @@ classification_model = load_model('C:/Users/jeesh/Documents(local)/FYP/fyp code/
 def home():
     return render_template('upload.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.route('/contact')
+def contact():
+    # Process form data here
+    return render_template('contact.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
@@ -109,14 +126,19 @@ def predict():
         
         # Resize the image with contour back to original size
         img_with_contour_resized = resize_image_to_original(img_with_contour, original_size)
+        segmented_region_resized = resize_image_to_original(segmented_region, original_size)
 
         # Encode the segmented image to base64 to send in the JSON response
         _, buffer = cv2.imencode('.png', img_with_contour_resized)
         b64_segmented_image = base64.b64encode(buffer).decode('utf-8')
+        
+        _, buffer2 = cv2.imencode('.png', segmented_region_resized)
+        b64_mask_image = base64.b64encode(buffer2).decode('utf-8')
 
         # Return the classification result and the base64-encoded image
         return jsonify({
             'segmented_image': f"data:image/png;base64,{b64_segmented_image}",
+            'mask_image': f"data:image/png;base64,{b64_mask_image}",
             'predicted_class': predicted_class_label,
             'confidence_score': f"{confidence_score:.2f}"
         })

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>About - LESION LAB</title>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%; /* Ensures that the body takes at least the full height of the viewport */
+
+                font-family: 'Open Sans', sans-serif;
+                background: #DDE6ED;
+                padding: 20px;
+            }
+            h2, h3 {
+                color: #27374D;
+            }
+            p {
+                color: #526D82;
+            }
+            .content {
+                background: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                margin-top: 20px;
+            }
+            .hero {
+                background: #27374D; /* Dark blue for the hero background */
+                padding: 2rem 0;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                color: #9DB2BF; /* Light blue for heading */
+                margin-bottom: 0.5rem;
+                font-size: 2.5em;
+            }
+            
+            .hero p {
+                color: #E7F6F2;
+                margin-bottom: 5rem;
+            }
+            footer {
+                color: #E7F6F2; /* Dark blue for footer text */
+                padding: 1rem 0;
+                text-align: center;
+            }
+            footer a {
+                color: #E7F6F2;
+                text-decoration: none;
+            }
+            
+            footer a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>LESION LAB</strong></li>
+        </ul>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="{{ url_for('contact') }}" role="button" target="_blank">Contact Us</a></li>
+        </ul>
+    </nav>
+    <section class="hero">
+        <h1>About LESION LAB</h1>
+        <p>Empowering skin health through artificial intelligence.</p>
+    </section>
+    <main class="container">
+        <section>
+            <h2>Our Mission</h2>
+            <p>At LESION LAB, we're dedicated to revolutionizing skin health diagnosis using the power of AI. We aim to provide fast, reliable, and accessible skin assessments, helping to identify skin anomalies and educate our users about potential skin conditions.</p>
+        </section>
+
+        <section>
+            <h2>What We Do</h2>
+            <p>LESION LAB utilizes sophisticated AI algorithms to process images of skin lesions and provide instantaneous feedback on whether they show characteristics of benign or malignant conditions.</p>
+        </section>
+
+        <section>
+            <h2>Our Technology</h2>
+            <p>Our platform leverages cutting-edge machine learning models trained on extensive datasets of dermatological images, ensuring high accuracy and the continual improvement of our diagnostic tools.</p>
+        </section>
+
+        <section>
+            <h2>Our Team</h2>
+            <p>Founded by experts in dermatology, AI research, and digital healthcare, our team is passionate about combining their expertise to enhance healthcare accessibility and effectiveness.</p>
+        </section>
+
+        <section>
+            <h2>Why Choose LESION LAB?</h2>
+            <ul>
+                <li><strong>Accessibility:</strong> Our services are designed to be accessible to everyone, everywhere.</li>
+                <li><strong>Speed:</strong> Quick analysis and feedback speeds up the decision-making process regarding further medical consultation.</li>
+                <li><strong>Education:</strong> We believe in empowering our users with knowledge about their skin health.</li>
+                <li><strong>Privacy:</strong> We prioritize your privacy with a commitment to data security—images are processed without being stored or shared.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Connect With Us</h2>
+            <p>If you have any questions or feedback, or if you're interested in partnering with us, please <a href="contact.html">contact us</a>.</p>
+        </section>
+    </main>
+
+    <section class="hero">
+        <footer class="container">
+            <small>
+                <a href="{{ url_for('privacy') }}" target="_blank">Privacy Policy</a> • <a href="{{ url_for('terms') }}" target="_blank">Terms of Use</a>
+            </small>
+        </footer>
+    </section>
+</body>
+</html>

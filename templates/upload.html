@@ -143,14 +143,14 @@
     </ul>
     <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#" role="button">Contact Us</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}" role="button" target="_blank">Contact Us</a></li>
     </ul>
 </nav>
 
 <section class="hero">
     <hgroup>
-        <h1>Diagnose Skin Cancer with AI</h1>
+        <h1>Skin Cancer Diagnosis with AI</h1>
         <h3>Fast, Accurate, and Reliable</h3>
     </hgroup>
     <p>
@@ -234,7 +234,11 @@
                     <div class="result-preview" id="segmentedImagePreview">
                         <img src="" alt="Segmented Image Preview" style="display: none;">
                     </div>
+                    
                     <div id="result"></div>
+                </div>
+                <div class="mask-preview" id="maskPreview">
+                    <img src="" alt="Mask Preview" style="display: none;">
                 </div>
             </div>
         </div>
@@ -245,7 +249,7 @@
 <section class="hero">
 <footer class="container">
     <small>
-        <a href="static\privacy.html" target="_blank">Privacy Policy</a> • <a href="static\terms.html" target="_blank">Terms of Use</a>
+        <a href="{{ url_for('privacy') }}" target="_blank">Privacy Policy</a> • <a href="{{ url_for('terms') }}" target="_blank">Terms of Use</a>
     </small>
 </footer>
 </section>
@@ -254,6 +258,7 @@
     const imageUpload = document.getElementById('imageUpload');
     const imagePreview = document.getElementById('imagePreview').querySelector('img');
     const segmentedImagePreview = document.getElementById('segmentedImagePreview').querySelector('img');
+    const maskPreview = document.getElementById('maskPreview').querySelector('img');
     const resultDiv = document.getElementById('result');
 
     imageUpload.onchange = event => {
@@ -279,6 +284,9 @@
             if (data.segmented_image) {
                 segmentedImagePreview.src = data.segmented_image;
                 segmentedImagePreview.style.display = 'block';
+
+                maskPreview.src = data.mask_image;
+                maskPreview.style.display = 'block';
             }
             resultDiv.innerHTML = `<p>Predicted Class: ${data.predicted_class}<br>Confidence Score: ${data.confidence_score}</p>`;
         })
@@ -293,6 +301,8 @@
         imagePreview.src = '';
         segmentedImagePreview.style.display = 'none';
         segmentedImagePreview.src = '';
+        maskPreview.style.display = 'none';
+        maskPreview.src = '';
         // Clear the results area
         resultDiv.innerHTML = '';
     }
