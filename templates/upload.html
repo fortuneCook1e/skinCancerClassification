@@ -229,17 +229,20 @@
                     <button onclick="predict()">Predict</button>
                     <button onclick="clearResults()">Clear</button>
                 </div>
-
+                
+                <div class="mask-preview" id="maskPreview">
+                    <img src="" alt="Mask Preview" style="display: none;">
+                    <p class="image-title" style="display: none;">Image Mask</p>
+                </div>
+                
                 <div class="output-field">
                     <div class="result-preview" id="segmentedImagePreview">
                         <img src="" alt="Segmented Image Preview" style="display: none;">
+                        <p class="image-title" style="display: none;">Image Contour</p>
                     </div>
-                    
                     <div id="result"></div>
                 </div>
-                <div class="mask-preview" id="maskPreview">
-                    <img src="" alt="Mask Preview" style="display: none;">
-                </div>
+                
             </div>
         </div>
     </div>
@@ -284,9 +287,13 @@
             if (data.segmented_image) {
                 segmentedImagePreview.src = data.segmented_image;
                 segmentedImagePreview.style.display = 'block';
+                document.querySelector('#segmentedImagePreview .image-title').style.display = 'block'; // Show title
+
 
                 maskPreview.src = data.mask_image;
                 maskPreview.style.display = 'block';
+                document.querySelector('#maskPreview .image-title').style.display = 'block'; // Show title
+
             }
             resultDiv.innerHTML = `<p>Predicted Class: ${data.predicted_class}<br>Confidence Score: ${data.confidence_score}</p>`;
         })
@@ -301,8 +308,12 @@
         imagePreview.src = '';
         segmentedImagePreview.style.display = 'none';
         segmentedImagePreview.src = '';
+        document.querySelector('#segmentedImagePreview .image-title').style.display = 'none'; // Hide title
+
         maskPreview.style.display = 'none';
         maskPreview.src = '';
+        document.querySelector('#maskPreview .image-title').style.display = 'none'; // Hide title
+
         // Clear the results area
         resultDiv.innerHTML = '';
     }
